@@ -53,6 +53,9 @@ if [ ! -x "$SCRIPTPATH/etc/ros_switch_ws.sh" ] ; then
   exit -1
 fi
 
+$SCRIPTPATH/etc/ros_clean_env.sh
+source ~/.profile
+
 path_to_executable=$(which tree)
 
 if [ ! -x "$path_to_executable" ] ; then
@@ -69,30 +72,33 @@ if [ ! -x "$path_to_executable" ] ; then
   exit -1
 fi
 
-WS_NAME=$1
+ROS_WS_NAME=$1
 
-if [ -d "${WS_NAME}" ]; then
-  echo "Workspace ${WS_NAME} already exists..."
+# Replace all - with _
+ROS_WS_NAME=${ROS_WS_NAME//[-]/_}
+
+if [ -d "${ROS_WS_NAME}" ]; then
+  echo "Workspace ${ROS_WS_NAME} already exists..."
   echo ""
   exit -1 
 fi
 
 CWD=$(pwd)
 
-echo "Creating ROS workspace: ${WS_NAME}"
+echo "Creating ROS workspace: ${ROS_WS_NAME}"
 
-ROS_HOME=${CWD}/${WS_NAME}/ 
+ROS_HOME=${CWD}/${ROS_WS_NAME}/ 
 
-mkdir -p ${WS_NAME}/src/ > /dev/null 2>&1
-mkdir -p ${WS_NAME}/devel/ > /dev/null 2>&1
-mkdir -p ${WS_NAME}/build/ > /dev/null 2>&1
-mkdir -p ${WS_NAME}/install/ > /dev/null 2>&1
-mkdir -p ${WS_NAME}/etc/ > /dev/null 2>&1
-mkdir -p ${WS_NAME}/run/logs/ > /dev/null 2>&1
+mkdir -p ${ROS_WS_NAME}/src/ > /dev/null 2>&1
+mkdir -p ${ROS_WS_NAME}/devel/ > /dev/null 2>&1
+mkdir -p ${ROS_WS_NAME}/build/ > /dev/null 2>&1
+mkdir -p ${ROS_WS_NAME}/install/ > /dev/null 2>&1
+mkdir -p ${ROS_WS_NAME}/etc/ > /dev/null 2>&1
+mkdir -p ${ROS_WS_NAME}/run/logs/ > /dev/null 2>&1
 
-chmod -R 750 ${WS_NAME} > /dev/null 2>&1
+chmod -R 750 ${ROS_WS_NAME} > /dev/null 2>&1
 
-cd ${WS_NAME}/src
+cd ${ROS_WS_NAME}/src
 catkin_init_workspace > /dev/null 2>&1
 cd ..
 catkin_make
@@ -100,9 +106,9 @@ tree
 
 for file in ./devel/setup.*
 do
-  echo "export ROS_HOME=${CWD}/${WS_NAME}/run/" >> "$file"
-  echo "export ROS_LOG_DIR=${CWD}/${WS_NAME}/run/logs/" >> "$file" 
-  echo "export ROS_WORKSPACE=${CWD}/${WS_NAME}/" >> "$file" 
+  echo "export ROS_HOME=${CWD}/${ROS_WS_NAME}/run/" >> "$file"
+  echo "export ROS_LOG_DIR=${CWD}/${ROS_WS_NAME}/run/logs/" >> "$file" 
+  echo "export ROS_WORKSPACE=${CWD}/${ROS_WS_NAME}/" >> "$file" 
 done
 
 cp -f $SCRIPTPATH/ros_env.sh ./etc/ > /dev/null 2>&1
@@ -121,11 +127,11 @@ echo "# execute following command from workspace root path" > README.txt
 echo "./etc/ros_create_pkg.sh pkg-name" >> README.txt 
 echo "" >> README.txt 
 
-echo "# To build entire project execute catkin_make in ${WS_NAME}/" >> README.txt
+echo "# To build entire project execute catkin_make in ${ROS_WS_NAME}/" >> README.txt
 echo "catkin_make" >> README.txt
 echo "" >> README.txt 
 
-echo "# To add new package execute catkin_create_pkg in ${WS_NAME}/src/" >> README.txt
+echo "# To add new package execute catkin_create_pkg in ${ROS_WS_NAME}/src/" >> README.txt
 echo "catkin_create_pkg package_name" >> README.txt
 echo "" >> README.txt 
 
@@ -140,14 +146,14 @@ echo "" >> README.txt
 chmod 640 README.txt
 
 echo "Workspace: $ROS_HOME"
-echo "!!! Workspace $WS_NAME created !!!"
+echo "!!! Workspace $ROS_WS_NAME created !!!"
 echo ""
 echo ""
 echo ""
-echo "Please read $WS_NAME/README.txt"
+echo "Please read $ROS_WS_NAME/README.txt"
 echo ""
 echo "--------------------------------------------------------"
-echo "- Next step is to enable switch enviroment to $WS_NAME -"
+echo "- Next step is to enable switch enviroment to $ROS_WS_NAME -"
 echo "- Run following commend to switch to current workspace -"
 echo "-                                                      -"
 echo " cd $ROS_HOME    
