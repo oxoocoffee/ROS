@@ -4,7 +4,7 @@ These are few scripts to create and manage ROS workspace and packages
 First thing install ROS ( http://wiki.ros.org/ROS/Installation )
 
 1. After checkout this project (ex ~/projects/ROS) you need to
-   add following to your .profile
+   add following to your .bashrc
 
         ROS_SCRIPTS=~/projects/ROS
 
@@ -21,7 +21,7 @@ First thing install ROS ( http://wiki.ros.org/ROS/Installation )
         pathadd ${ROS_SCRIPTS}
 
 2. Refresh your env by running
-        source ~/.profile
+        source ~/.bashrc
 
 3. Check if ROS_SCRIPTS in your PATH
         echo ${PATH}

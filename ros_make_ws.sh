@@ -13,7 +13,7 @@ fi
 
 if [ -z "$ROS_ROOT" ]; then
     echo "Need to set ROS_ROOT"
-    echo "Did you add \"source /opt/ros/RELEASE/setup.bash\" to .profile?"
+    echo "Did you add \"source /opt/ros/RELEASE/setup.bash\" to .bashrc?"
     echo ""
     exit 1
 fi
@@ -54,7 +54,7 @@ if [ ! -x "$SCRIPTPATH/etc/ros_switch_ws.sh" ] ; then
 fi
 
 $SCRIPTPATH/etc/ros_clean_env.sh
-source ~/.profile
+source ~/.bashrc
 
 path_to_executable=$(which tree)
 
