@@ -1,6 +1,7 @@
 #/bin/bash
 
-if [[ ${0##*/} == -* ]]; then
+#if [[ ${0##*/} == -* ]]; then
+if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     source ./etc/ros_clean_env.sh 
     source ~/.bashrc
     source ./devel/setup.bash
