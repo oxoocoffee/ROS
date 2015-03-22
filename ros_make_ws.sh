@@ -94,6 +94,7 @@ mkdir -p ${ROS_WS_NAME}/devel/ > /dev/null 2>&1
 mkdir -p ${ROS_WS_NAME}/build/ > /dev/null 2>&1
 mkdir -p ${ROS_WS_NAME}/install/ > /dev/null 2>&1
 mkdir -p ${ROS_WS_NAME}/etc/ > /dev/null 2>&1
+mkdir -p ${ROS_WS_NAME}/bags/ > /dev/null 2>&1
 mkdir -p ${ROS_WS_NAME}/run/logs/ > /dev/null 2>&1
 
 chmod -R 750 ${ROS_WS_NAME} > /dev/null 2>&1
