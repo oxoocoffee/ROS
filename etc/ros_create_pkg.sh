@@ -29,6 +29,7 @@ if [ ! -d "$ROS_WORKSPACE/src" ] ; then
   exit -1
 fi
 
+
 # Absolute path to this script. /home/user/bin/foo.sh
 SCRIPT=$(readlink -f $0)
 # Absolute path this script is in. /home/user/bin
@@ -39,17 +40,32 @@ ROS_PKG_NAME=$1
 # Replace all - with _
 ROS_PKG_NAME=${ROS_PKG_NAME//[-]/_}
 
-if [ -d "${ROS_WORKSPACE}/src/${ROS_PKG_NAME}" ]; then
-  echo "Package ${ROS_PKG_NAME} already exists..."
-  echo ""
-  exit -1
+#response=""
+echo ""
+echo "You are about to create ROS package ${ROS_PKG_NAME}"
+echo "in workspace ${ROS_WORKSPACE}"
+echo ""
+read -r -p "Are you sure? [y/N] " response
+ 
+if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+    if [ -d "${ROS_WORKSPACE}/src/${ROS_PKG_NAME}" ]; then
+      echo "Package ${ROS_PKG_NAME} already exists..."
+      echo ""
+      exit -1
+    fi
+
+    CWD=$(pwd)
+
+    echo "Creating ROS package: ${ROS_WORKSPACE}/src/${ROS_PKG_NAME}"
+    echo ""
+
+    cd $ROS_WORKSPACE/src 
+
+    catkin_create_pkg ${ROS_PKG_NAME} roscpp std_msgs dynamic_reconfigure message_generation sensor_msgs
+
+    echo ""
+    echo "Success!!!"
 fi
 
-CWD=$(pwd)
-
-echo "Creating ROS package: ${ROS_PKG_NAME}"
-
-cd $ROS_WORKSPACE/src 
-
-catkin_create_pkg ${ROS_PKG_NAME} roscpp std_msgs dynamic_reconfigure message_generation sensor_msgs
-
+echo ""
