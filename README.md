@@ -9,7 +9,7 @@ First thing install ROS ( http://wiki.ros.org/ROS/Installation )
         ROS_SCRIPTS=~/projects/ROS
 
         # Source desired ROS release
-        source /opt/ros/${ROS_RELEASE}/setup.bash
+        source /opt/ros/${ROS_DISTRO}/setup.bash
 
         pathadd() {
             if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
@@ -61,3 +61,6 @@ First thing install ROS ( http://wiki.ros.org/ROS/Installation )
    
 12. When you start ROS logs and .pid files will be located in your
     ${ROS_WORKSPACE}/run/ folder 
+
+13. You can start roscore and its log should be in {$ROS_WORKSPACE}/run
+    roscore &> /dev/null &
