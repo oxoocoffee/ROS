@@ -2,10 +2,11 @@
 # By Robert J. Gebis (oxoocoffee)
 # rjgebis AT g mail DOT com
 
-if [ $# -ne 1 ]
+if [ $# == "0" ]
 then
-  echo "Usage: `basename $0` <ros-pkg>"
-  echo ""
+  echo "Usage: `basename $0` [-p ros_pkg] [-q]"
+  echo "  -p ros-pkg - new pkg name (required)"
+  echo "  -q         - enable rqt gui cpp (optional)"
   exit -1
 fi
 
@@ -29,13 +30,42 @@ if [ ! -d "$ROS_WORKSPACE/src" ] ; then
   exit -1
 fi
 
+ROS_RQT_GUI=
+ROS_PKG_NAME=
+
+OPTIND=1 # Reset is necessary if getopts was used previously in the script.  It is a good idea to make this local in a function.
+
+while getopts "p:g" opt; do
+    case "$opt" in
+        p)
+            ROS_PKG_NAME=${OPTARG}
+            shift
+            ;;
+        g)
+            ROS_RQT_GUI="rqt_gui rqt_gui_cpp"
+	    ;;
+        --)
+	    # No more options left.
+            shift
+            break
+	    ;;
+
+        --default)
+	    shift
+	    ;;
+     esac
+done
+shift "$((OPTIND-1))" # Shift off the options and optional --.
+
+if [ -z "${ROS_PKG_NAME}" ]; then
+    echo " ERROR: Package name missing: -p pkg_name"
+    exit 1
+fi
 
 # Absolute path to this script. /home/user/bin/foo.sh
 SCRIPT=$(readlink -f $0)
 # Absolute path this script is in. /home/user/bin
 SCRIPTPATH=`dirname ${SCRIPT}`
-
-ROS_PKG_NAME=$1
 
 # Replace all - with _
 ROS_PKG_NAME=${ROS_PKG_NAME//[-]/_}
@@ -62,7 +92,9 @@ then
 
     cd $ROS_WORKSPACE/src 
 
-    catkin_create_pkg ${ROS_PKG_NAME} roscpp std_msgs dynamic_reconfigure message_generation sensor_msgs
+    catkin_create_pkg ${ROS_PKG_NAME} roscpp std_msgs dynamic_reconfigure message_generation sensor_msgs ${ROS_RQT_GUI}
+    mkdir ./${ROS_PKG_NAME}/srv
+    mkdir ./${ROS_PKG_NAME}/msg
 
     echo ""
     echo "Success!!!"

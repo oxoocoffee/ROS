@@ -111,6 +111,7 @@ do
   echo "export ROS_LOG_DIR=${CWD}/${ROS_WS_NAME}/run/logs/" >> "$file" 
   echo "export ROS_WORKSPACE=${CWD}/${ROS_WS_NAME}/" >> "$file" 
   echo "export CMAKE_INSTALL_PREFIX=${CWD}/${ROS_WS_NAME}/install/" >> "$file"
+  echo "export CATKIN_DEVEL_PREFIX=${CWD}/${ROS_WS_NAME}/devel/" >> "$file"
 done
 
 cp -f $SCRIPTPATH/ros_env.sh ./etc/ > /dev/null 2>&1
