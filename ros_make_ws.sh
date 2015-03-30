@@ -87,7 +87,7 @@ CWD=$(pwd)
 
 echo "Creating ROS workspace: ${ROS_WS_NAME}"
 
-ROS_HOME=${CWD}/${ROS_WS_NAME}/ 
+ROS_HOME=${CWD}/${ROS_WS_NAME} 
 
 mkdir -p ${ROS_WS_NAME}/src/ > /dev/null 2>&1
 mkdir -p ${ROS_WS_NAME}/devel/ > /dev/null 2>&1
@@ -105,14 +105,12 @@ cd ..
 catkin_make
 tree
 
-for file in ./devel/setup.*
-do
-  echo "export ROS_HOME=${CWD}/${ROS_WS_NAME}/run/" >> "$file"
-  echo "export ROS_LOG_DIR=${CWD}/${ROS_WS_NAME}/run/logs/" >> "$file" 
-  echo "export ROS_WORKSPACE=${CWD}/${ROS_WS_NAME}/" >> "$file" 
-  echo "export CMAKE_INSTALL_PREFIX=${CWD}/${ROS_WS_NAME}/install/" >> "$file"
-  echo "export CATKIN_DEVEL_PREFIX=${CWD}/${ROS_WS_NAME}/devel/" >> "$file"
-done
+echo "#!/usr/bin/env sh" >> "${ROS_HOME}/etc/ros_export_var"
+echo "export ROS_WORKSPACE=${ROS_HOME}/" >> "${ROS_HOME}/etc/ros_export_var" 
+echo "export ROS_HOME=${ROS_HOME}/run/" >> "${ROS_HOME}/etc/ros_export_var"
+echo "export ROS_LOG_DIR=${ROS_HOME}/run/logs/" >> "${ROS_HOME}/etc/ros_export_var" 
+echo "export CMAKE_INSTALL_PREFIX=${ROS_HOME}/install/" >> "${ROS_HOME}/etc/ros_export_var"
+echo "export CATKIN_DEVEL_PREFIX=${ROS_HOME}/devel/" >> "${ROS_HOME}/etc/ros_export_var"
 
 cp -f $SCRIPTPATH/ros_env.sh ./etc/ > /dev/null 2>&1
 cp -f $SCRIPTPATH/etc/ros_clean_ws.sh ./etc/ > /dev/null 2>&1
@@ -148,7 +146,7 @@ echo "" >> README.txt
 
 chmod 640 README.txt
 
-echo "Workspace: $ROS_HOME"
+echo "Workspace: $ROS_HOME/"
 echo "!!! Workspace $ROS_WS_NAME created !!!"
 echo ""
 echo ""

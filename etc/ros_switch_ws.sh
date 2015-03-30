@@ -5,6 +5,7 @@ if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
     source ./etc/ros_clean_env.sh 
     source ~/.bashrc
     source ./devel/setup.bash
+    source ./etc/ros_export_var
     ./etc/ros_env.sh
 else
     echo ""
