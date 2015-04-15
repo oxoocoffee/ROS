@@ -57,10 +57,24 @@ First thing install ROS ( http://wiki.ros.org/ROS/Installation )
         catkin_make
         
 11. To create your own package in current ${ROS_WORKSPACE} run following command
-   in root of your working workspace
+        ./etc/ros_create_pkg.sh -p pka_name
+
+    If you wnat ot create rqt plugin then add -g. This switch will also create
+    resource folder which should be used to Qt UI files
+        ./etc/ros_create_pkg.sh -p pka_name -g
    
 12. When you start ROS logs and .pid files will be located in your
     ${ROS_WORKSPACE}/run/ folder 
 
 13. You can start roscore and its log should be in {$ROS_WORKSPACE}/run
     roscore &> /dev/null &
+
+14. You can use ros_rqt.sh to start roscore (it checks if one is not running)
+    and rqt app. ROS logs will be placed in {$ROS_WORKSPACE} activated by
+    ./etc/ros_switch_ws.sh
+
+15. There is also ros_kill.sh which will killed roscore. It will print message
+    if one was running. Else it will print nothing
+
+
+More to come

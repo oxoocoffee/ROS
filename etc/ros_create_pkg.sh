@@ -6,7 +6,7 @@ if [ $# == "0" ]
 then
   echo "Usage: `basename $0` [-p ros_pkg] [-q]"
   echo "  -p ros-pkg - new pkg name (required)"
-  echo "  -q         - enable rqt gui cpp (optional)"
+  echo "  -g         - enable rqt gui cpp (optional)"
   exit -1
 fi
 
@@ -95,6 +95,11 @@ then
     catkin_create_pkg ${ROS_PKG_NAME} roscpp std_msgs dynamic_reconfigure message_generation sensor_msgs ${ROS_RQT_GUI}
     mkdir ./${ROS_PKG_NAME}/srv
     mkdir ./${ROS_PKG_NAME}/msg
+    mkdir ./${ROS_PKG_NAME}/launch
+
+    if [ -v ${ROS_RQT_GUI} ]; then
+        mkdir ./${ROS_PKG_NAME}/resource
+    fi
 
     echo ""
     echo "Success!!!"
